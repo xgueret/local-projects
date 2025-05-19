@@ -1,0 +1,28 @@
+services:
+
+  {{ planka_container_name }}:
+    image: {{ planka_image }}:{{ planka_image_version }}
+    container_name: {{ planka_container_name }}
+    restart: unless-stopped
+    ports:
+      - "{{ planka_port }}:1337"
+    environment:
+      - BASE_URL=http://{{ planka_base_url }}
+      - TRUST_PROXY=0
+      - DATABASE_URL=postgresql://{{ postgres_user }}:{{ postgres_password }}@{{ postgres_container_name }}:5432/{{ planka_bdd }}
+      - SECRET_KEY={{ planka_secret_key }}
+      - DEFAULT_ADMIN_EMAIL={{ planka_default_admin_email }}
+      - DEFAULT_ADMIN_PASSWORD={{ planka_default_admin_password }}
+      - DEFAULT_ADMIN_NAME={{ planka_default_admin_name }}
+      - DEFAULT_ADMIN_USERNAME={{ planka_default_admin_username }}
+    volumes:
+      - planka-storage:/app/data
+    networks:
+      - {{ app_docker_network_name }}
+
+volumes:
+  planka-storage:
+
+networks:
+  {{ app_docker_network_name }}:
+    external: true

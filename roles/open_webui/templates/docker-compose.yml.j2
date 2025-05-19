@@ -1,0 +1,13 @@
+services:
+  {{ open_webui_container_name }}:
+    image: ghcr.io/open-webui/open-webui:{{ open_webui_version }}
+    container_name: {{ open_webui_container_name }}
+    env_file:
+      - .env
+    volumes:
+      - open-webui-data:/app/backend/data
+    restart: unless-stopped
+    network_mode: host
+
+volumes:
+  open-webui-data:

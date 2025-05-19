@@ -1,0 +1,8 @@
+---
+postgres_container_name: postgres
+postgres_app_path: "{{ app_path }}/postgres"
+postgres_image: postgres
+postgres_image_version: 15-alpine
+postgres_dbs: "{{ postgres_dbs_vault }}"
+postgres_password: "{{ postgres_password_vault }}"
+postgres_user: "{{ postgres_user_vault }}"

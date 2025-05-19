@@ -1,0 +1,20 @@
+services:
+  {{ excalidraw_container_name }}:
+    image: {{ excalidraw_image }}:{{ excalidraw_image_version }}
+    container_name: {{ excalidraw_container_name }}
+    restart: unless-stopped
+    ports:
+      - "{{ excalidraw_port }}:80"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - excalidraw-storage:/opt/excalidraw
+    networks:
+      - {{ app_docker_network_name }}
+
+volumes:
+  excalidraw-storage:
+
+networks:
+  {{ app_docker_network_name }}:
+    external: true

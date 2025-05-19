@@ -1,0 +1,28 @@
+---
+- name: Create path for planka app
+  ansible.builtin.file:
+    path: "{{ planka_app_path }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0770'
+
+- name: Copy Docker Compose file
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ planka_app_path }}/docker-compose.yml"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0774'
+
+- name: Stop and remove existing Docker Compose services
+  ansible.builtin.shell: |
+    cd {{ planka_app_path }}
+    docker compose down
+  changed_when: true
+
+- name: Start Docker Compose services
+  ansible.builtin.shell: |
+    cd {{ planka_app_path }}
+    docker compose up -d
+  changed_when: true

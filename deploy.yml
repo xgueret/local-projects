@@ -1,0 +1,36 @@
+---
+- name: Deploy local projects
+  hosts: local
+  become: false
+  gather_facts: true
+  pre_tasks:
+    - name: Create local app directory
+      ansible.builtin.file:
+        path: "{{ app_path }}"
+        state: directory
+        mode: '0770'
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+
+    - name: Create docker network
+      community.docker.docker_network:
+        name: local_network
+        driver: bridge
+        state: present
+
+  roles:
+    - role: homer
+      tags:
+        - homer
+    - role: excalidraw
+      tags:
+        - excalidraw
+    - role: postgres
+      tags:
+        - postgres
+    - role: planka
+      tags:
+        - planka
+    - role: open_webui
+      tags:
+        - open_webui

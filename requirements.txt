@@ -1,0 +1,5 @@
+ansible
+pre-commit
+ansible-lint
+requests
+docker
