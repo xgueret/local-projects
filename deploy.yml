@@ -19,18 +19,22 @@
         state: present
 
   roles:
-    - role: homer
-      tags:
-        - homer
-    - role: excalidraw
-      tags:
-        - excalidraw
     - role: postgres
       tags:
         - postgres
+    - role: homer
+      when: deploy_homer | default(false)
+      tags:
+        - homer
+    - role: excalidraw
+      when: deploy_excalidraw | default(false)
+      tags:
+        - excalidraw
     - role: planka
+      when: deploy_planka | default(false)
       tags:
         - planka
     - role: open_webui
+      when: deploy_open_webui | default(false)
       tags:
         - open_webui

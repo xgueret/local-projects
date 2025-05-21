@@ -1,11 +1,13 @@
 ---
 planka_container_name: planka
+
 planka_app_path: "{{ app_path }}/planka"
 planka_image: ghcr.io/plankanban/planka
 planka_image_version: latest
 planka_port: 8083
 planka_base_url: "{{ planka_base_url_vault }}"
 planka_secret_key: "{{ planka_config_secret_key_vault }}"
+
 planka_default_admin_email: "{{ planka_default_admin_email_vault }}"
 planka_default_admin_name: "{{ planka_default_admin_name_vault }}"
 planka_default_admin_username: "{{ planka_default_admin_username_vault }}"

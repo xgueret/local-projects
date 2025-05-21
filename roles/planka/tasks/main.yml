@@ -1,28 +1,25 @@
 ---
-- name: Create path for planka app
-  ansible.builtin.file:
-    path: "{{ planka_app_path }}"
-    state: directory
-    owner: "{{ app_user }}"
-    group: "{{ app_group }}"
-    mode: '0770'
-
-- name: Copy Docker Compose file
-  ansible.builtin.template:
-    src: docker-compose.yml.j2
-    dest: "{{ planka_app_path }}/docker-compose.yml"
-    owner: "{{ app_user }}"
-    group: "{{ app_group }}"
-    mode: '0774'
-
-- name: Stop and remove existing Docker Compose services
-  ansible.builtin.shell: |
-    cd {{ planka_app_path }}
-    docker compose down
-  changed_when: true
-
-- name: Start Docker Compose services
-  ansible.builtin.shell: |
-    cd {{ planka_app_path }}
-    docker compose up -d
-  changed_when: true
+- name: Deploy Planka using common docker tasks
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: docker_app
+  vars:
+    common_app_install_path: "{{ planka_app_path }}"
+    common_app_container_name: "{{ planka_container_name }}"
+    common_app_image: "ghcr.io/plankanban/planka"
+    common_app_version: "{{ planka_image_version }}"
+    common_app_ports:
+      - "{{ planka_port }}:1337"
+    common_app_volumes:
+      - "planka-storage:/app/data"
+    common_app_volumes_def:
+      - "planka-storage"
+    common_app_environment:
+      BASE_URL: "http://{{ planka_base_url }}"
+      TRUST_PROXY: "0"
+      DATABASE_URL: "postgresql://{{ postgres_user }}:{{ postgres_password }}@{{ postgres_container_name }}:5432/{{ planka_bdd }}"
+      SECRET_KEY: "{{ planka_secret_key }}"
+      DEFAULT_ADMIN_EMAIL: "{{ planka_default_admin_email }}"
+      DEFAULT_ADMIN_PASSWORD: "{{ planka_default_admin_password }}"
+      DEFAULT_ADMIN_NAME: "{{ planka_default_admin_name }}"
+      DEFAULT_ADMIN_USERNAME: "{{ planka_default_admin_username }}"
