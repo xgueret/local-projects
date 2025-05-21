@@ -23,8 +23,8 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - {{ app_docker_network_name }}
+      - {{ app_network }}
 
 networks:
-  {{ app_docker_network_name }}:
+  {{ app_network }}:
     external: true

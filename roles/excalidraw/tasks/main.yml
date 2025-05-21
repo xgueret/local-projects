@@ -1,28 +1,16 @@
 ---
-- name: Create path for excalidraw app
-  ansible.builtin.file:
-    path: "{{ excalidraw_app_path }}"
-    state: directory
-    owner: "{{ app_user }}"
-    group: "{{ app_group }}"
-    mode: '0770'
-
-- name: Copy Docker Compose file
-  ansible.builtin.template:
-    src: docker-compose.yml.j2
-    dest: "{{ excalidraw_app_path }}/docker-compose.yml"
-    owner: "{{ app_user }}"
-    group: "{{ app_group }}"
-    mode: '0774'
-
-- name: Stop and remove existing Docker Compose services
-  ansible.builtin.shell: |
-    cd {{ excalidraw_app_path }}
-    docker compose down
-  changed_when: true
-
-- name: Start Docker Compose services
-  ansible.builtin.shell: |
-    cd {{ excalidraw_app_path }}
-    docker compose up -d
-  changed_when: true
+- name: Include common docker app tasks
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: docker_app
+  vars:
+    common_app_install_path: "{{ excalidraw_app_path }}"
+    common_app_container_name: "{{ excalidraw_container_name }}"
+    common_app_image: "{{ excalidraw_image }}"
+    common_app_version: "{{ excalidraw_version }}"
+    common_app_ports:
+      - "{{ excalidraw_port }}:80"
+    common_app_volumes:
+      - "excalidraw-storage:/opt/excalidraw"
+    common_app_volumes_def:
+      - "excalidraw-storage"

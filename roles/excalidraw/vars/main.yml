@@ -2,5 +2,5 @@
 excalidraw_container_name: excalidraw
 excalidraw_app_path: "{{ app_path }}/excalidraw"
 excalidraw_image: excalidraw/excalidraw
-excalidraw_image_version: latest
+excalidraw_version: latest
 excalidraw_port: "8082"

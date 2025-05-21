@@ -1,5 +1,10 @@
 ---
-app_group: "{{ ansible_user_gid }}"
 app_user: "{{ ansible_user_id }}"
+app_group: "{{ ansible_user_gid }}"
 app_path: "$HOME/Workspace/local/app"
-app_docker_network_name: local_network
+app_network: local_network
+
+deploy_homer: true
+deploy_excalidraw: true
+deploy_open_webui: true
+deploy_planka: false

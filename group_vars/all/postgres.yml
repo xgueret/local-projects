@@ -1,0 +1,4 @@
+---
+postgres_user: "{{ postgres_user_vault }}"
+postgres_password: "{{ postgres_password_vault }}"
+postgres_container_name: postgres
