@@ -27,6 +27,6 @@
       - "open-webui-data:/app/backend/data"
     common_app_volumes_def:
       - "open-webui-data"
-    common_network_mode: "host"  # Spécifique à OpenWebUI
+    # common_network_mode: "host"  # Spécifique à OpenWebUI
     common_desired_state: present
     common_pull_images: missing

@@ -1,0 +1,29 @@
+services:
+  ollama:
+    image: {{ ollama_image }}
+    container_name: {{ ollama_container_name }}
+    restart: unless-stopped
+    ports:
+      - "{{ ollama_port }}:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+{% if ollama_use_gpu %}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+{% endif %}
+
+    networks:
+      - local_network
+
+volumes:
+  ollama_data:
+
+networks:
+  local_network:
+    external: true

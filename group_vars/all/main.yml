@@ -7,4 +7,5 @@ app_network: local_network
 deploy_homer: true
 deploy_excalidraw: true
 deploy_open_webui: true
+deploy_ollama: true
 deploy_planka: false

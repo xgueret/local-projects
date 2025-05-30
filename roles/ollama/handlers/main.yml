@@ -1,0 +1,6 @@
+---
+- name: Restart Ollama containers
+  community.docker.docker_compose_v2:
+    project_src: "{{ ollama_app_path }}"
+    state: present
+    recreate: auto

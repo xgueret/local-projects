@@ -1,0 +1,67 @@
+---
+- name: Create Ollama compose directory
+  ansible.builtin.file:
+    path: "{{ ollama_app_path }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0755'
+
+- name: Deploy docker-compose configuration
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ ollama_app_path }}/docker-compose.yml"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0644'
+  notify: Restart Ollama containers
+
+- name: Manage Docker containers
+  community.docker.docker_compose_v2:
+    project_src: "{{ ollama_app_path }}"
+    state: present
+    pull: missing
+    recreate: auto
+  register: compose_result
+
+# - name: Show deployment result
+#   ansible.builtin.debug:
+#     var: compose_result
+
+- name: Extract Ollama CLI from container
+  block:
+    - name: Ensure temporary Ollama container exists (but not running)
+      community.docker.docker_container:
+        name: ollama-temp
+        image: ollama/ollama
+        state: started
+        recreate: true
+        auto_remove: false
+        command: sleep infinity
+
+    - name: Copy Ollama CLI to host
+      ansible.builtin.command: docker cp ollama-temp:/bin/ollama /usr/local/bin/ollama
+      args:
+        creates: /usr/local/bin/ollama
+      become: true
+
+    - name: Stop and remove temporary container
+      community.docker.docker_container:
+        name: ollama-temp
+        state: absent
+        force_kill: true
+
+    - name: Make ollama binary executable
+      ansible.builtin.file:
+        path: /usr/local/bin/ollama
+        mode: '0755'
+        owner: root
+        group: root
+
+- name: Configure CLI to target container's API
+  ansible.builtin.lineinfile:
+    path: /etc/profile.d/ollama.sh
+    create: true
+    line: "export OLLAMA_HOST=http://localhost:{{ ollama_api_port }}"
+    mode: '0755'
+  become: true
