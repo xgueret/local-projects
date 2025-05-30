@@ -1,0 +1,7 @@
+---
+ollama_container_name: ollama
+ollama_app_path: "{{ app_path }}/ollama"
+ollama_image: ollama/ollama
+ollama_image_version: latest
+ollama_port: "11434"
+ollama_use_gpu: true

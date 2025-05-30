@@ -20,6 +20,7 @@ repos:
     rev: v0.10.0
     hooks:
       - id: shellcheck
+        exclude: '(^|/)\.envrc$|(^|/)venv/'
 
   - repo: local
     hooks:

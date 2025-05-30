@@ -27,3 +27,9 @@ variable "visibility" {
   type        = string
   default     = "public"
 }
+
+# Variable to store the list of collaborators with their respective permissions
+variable "collaborators" {
+  type        = map(string)
+  description = "A map of collaborators where the key is the GitHub username and the value is the permission level"
+}

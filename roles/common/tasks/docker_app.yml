@@ -5,7 +5,7 @@
     state: directory
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
-    mode: '0770'
+    mode: '0755'
 
 - name: Deploy docker-compose configuration
   ansible.builtin.template:
@@ -13,7 +13,7 @@
     dest: "{{ common_app_install_path }}/docker-compose.yml"
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
-    mode: '0774'
+    mode: '0644'
 
 - name: Manage Docker containers
   community.docker.docker_compose_v2:

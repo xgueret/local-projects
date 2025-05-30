@@ -34,6 +34,10 @@
       when: deploy_planka | default(false)
       tags:
         - planka
+    - role: ollama
+      when: deploy_ollama | default(false)
+      tags:
+        - ollama
     - role: open_webui
       when: deploy_open_webui | default(false)
       tags:
