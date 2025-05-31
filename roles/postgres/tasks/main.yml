@@ -5,13 +5,13 @@
     state: directory
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
-    mode: '0770'
+    mode: '0755'
 
 - name: Create pgdata directory
   ansible.builtin.file:
     path: "{{ postgres_app_path }}/pgdata"
     state: directory
-    mode: '0770'
+    mode: '0755'
   become: true
 
 - name: Copy init-multiple-dbs.sh file
@@ -20,7 +20,7 @@
     dest: "{{ postgres_app_path }}/init-multiple-dbs.sh"
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
-    mode: '0774'
+    mode: '0755'
 
 - name: Copy Docker Compose file
   ansible.builtin.template:
@@ -28,7 +28,7 @@
     dest: "{{ postgres_app_path }}/docker-compose.yml"
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
-    mode: '0774'
+    mode: '0644'
 
 - name: Stop and remove existing Docker Compose services
   ansible.builtin.shell: |

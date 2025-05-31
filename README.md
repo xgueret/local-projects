@@ -3,52 +3,53 @@
 ![Stars](https://img.shields.io/github/stars/xgueret/local-projects?style=social) ![Last Commit](https://img.shields.io/github/last-commit/xgueret/local-projects)![Status](https://img.shields.io/badge/Status-Active-brightgreen) ![License](https://img.shields.io/badge/License-MIT-blue)
 ![Terraform](https://img.shields.io/badge/Terraform-%E2%89%A51.11.0-623CE4) ![Ansible](https://img.shields.io/badge/Ansible-2.14+-EE0000)
 
+🛠️ Un environnement de développement local automatisé pour déployer diverses applications avec Ansible et Docker.
 
-🛠️ A local development environment that automates the deployment of various applications using Ansible and Docker.
+## 📋 Aperçu
 
-## 📋 Overview
-
-This project provides an automated setup for a local development environment with several useful applications through Ansible playbooks. The infrastructure is containerized using Docker and can be easily deployed on any system with the required dependencies.
+Ce projet fournit une configuration automatisée pour un environnement de développement local avec plusieurs applications utiles via des playbooks Ansible. L'infrastructure est conteneurisée avec Docker et peut être facilement déployée sur n'importe quel système ayant les dépendances requises.
 
 ## 📱 Applications
 
-The following applications are included:
+Les applications suivantes sont incluses :
 
-- **🏠 Homer** - A dashboard to organize and access all your web services
-- **🎨 Excalidraw** - A virtual collaborative whiteboard tool
-- **🗄️ PostgreSQL** - A shared database server
-- **📊 Planka** - An open-source project management system (Kanban-style)
-- **🤖 Open WebUI** - A user interface for interacting with Ollama language models
+- **🏠 Homer** - Un dashboard pour organiser et accéder à tous vos services web
+- **🎨 Excalidraw** - Un tableau blanc collaboratif virtuel
+- **🗄️ PostgreSQL** - Un serveur de base de données partagé
+- **📊 Planka** - Un système de gestion de projet open-source (style Kanban)
+- **🤖 Ollama** - Infrastructure pour exécuter des modèles de langage locaux
+- **🌐 Open WebUI** - Une interface utilisateur pour interagir avec les modèles Ollama
 
-## ✅ Prerequisites
+## ✅ Prérequis
 
 - Python 3.x
 - Ansible
-- Docker and Docker Compose
+- Docker et Docker Compose
 - Git
+- [Installing the NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
 ## 📥 Installation
 
-1. Clone the repository:
+1. Cloner le dépôt :
 
 ```bash
 git clone https://github.com/xgueret/local-projects.git
 cd local-projects
 ```
 
-2. Install required dependencies:
+2. Installer les dépendances :
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Install Ansible collections:
+3. Installer les collections Ansible :
 
 ```bash
 ansible-galaxy collection install -r collections.yml
 ```
 
-4. Set up pre-commit hooks:
+4. Configurer les hooks pre-commit :
 
 ```bash
 pre-commit install
@@ -56,62 +57,68 @@ pre-commit install
 
 ## ⚙️ Configuration
 
-The project uses Ansible Vault for secure storage of sensitive information. You'll need to create a vault password file:
+Le projet utilise Ansible Vault pour stocker les informations sensibles. Créez un fichier de mot de passe :
 
 ```bash
 echo "your-vault-password" > ~/Workspace/.vault/.vault_password
 ```
 
-Edit the group variables as needed:
+Modifiez les variables selon vos besoins :
 
-- `group_vars/all/main.yml` - General configuration
-- `group_vars/all/vault/` - Contains encrypted sensitive information
+    group_vars/all/main.yml - Configuration générale
 
-## 🚀 Deployment
+    group_vars/all/vault/ - Contient les informations sensibles chiffrées
 
-Deploy all applications:
+## 🚀 Déploiement
+
+Déployer toutes les applications :
 
 ```bash
 ansible-playbook deploy.yml
 ```
 
-Deploy specific applications using tags:
+Déployer des applications spécifiques avec des tags :
 
 ```bash
 ansible-playbook deploy.yml --tags "homer,postgres"
 ```
 
-Available tags:
-- `homer`
-- `excalidraw`
-- `postgres`
-- `planka`
-- `open_webui`
+Tags disponibles :
 
-## 🔗 Application Access
+* homer
+* excalidraw
+* postgres
+* planka
+* ollama
+* open_webui
 
-After deployment, the applications will be available at:
+## 🔗 Accès aux applications
 
-- 🏠 Homer: http://localhost:8081
-- 🎨 Excalidraw: http://localhost:8082
-- 📊 Planka: http://localhost:8083
-- 🤖 Open WebUI: http://localhost:8080
+Après déploiement, les applications seront disponibles sur :
 
-## 📁 Project Structure
+* 🏠 Homer: http://localhost:8081
+* 🎨 Excalidraw: http://localhost:8082
+* 🤖 Open WebUI: http://localhost:8080
+* 🗄️ PostgreSQL: localhost:5432
+* 🤖 Ollama API: http://localhost:11434
 
-```
-├── ansible.cfg                 # Ansible configuration
-├── collections.yml             # Required Ansible collections
-├── deploy.yml                  # Main deployment playbook
-├── group_vars/                 # Variables for all hosts
+## 📁 Structure du projet
+
+```bash
+├── ansible.cfg                 # Configuration Ansible
+├── collections.yml             # Collections Ansible requises
+├── deploy.yml                  # Playbook principal
+├── group_vars/                 # Variables pour tous les hôtes
 │   └── all/
-│       ├── main.yml            # General variables
-│       └── vault/              # Encrypted sensitive variables
-├── inventory.yml               # Ansible inventory
-├── requirements.txt            # Python dependencies
-└── roles/                      # Application-specific roles
+│       ├── main.yml            # Variables générales
+│       └── vault/              # Variables sensibles chiffrées
+├── inventory.yml               # Inventaire Ansible
+├── requirements.txt            # Dépendances Python
+└── roles/                      # Rôles spécifiques aux applications
+    ├── common/                 # Tâches communes
     ├── excalidraw/
     ├── homer/
+    ├── ollama/
     ├── open_webui/
     ├── planka/
     └── postgres/
@@ -119,41 +126,41 @@ After deployment, the applications will be available at:
 
 ## ☁️ Infrastructure as Code
 
-The project includes Terraform configurations to manage GitHub repositories. To use this feature:
+Le projet inclut des configurations Terraform pour gérer les dépôts GitHub :
 
-1. Navigate to the GitHub directory:
+1. Aller dans le dossier GitHub :
 
 ```bash
 cd github
 ```
 
-2. Initialize Terraform:
+2. Initialiser Terraform :
 
 ```bash
 terraform init
 ```
 
-3. Deploy the infrastructure:
+3. Déployer l'infrastructure :
 
 ```bash
 terraform apply
 ```
 
-## 👨‍💻 Development
+## 👨‍💻 Développement
 
-The project includes several tools for development quality:
+Le projet inclut plusieurs outils pour la qualité du code :
 
-- **🔍 Pre-commit hooks** - Enforce code quality and standards
-- **🧪 Ansible Lint** - Ensure Ansible playbooks follow best practices
-- **📝 YAML Lint** - Validate YAML files for proper formatting
-- **🛡️ ShellCheck** - Check shell scripts for common issues
-- **🔧 Terraform validators** - Validate Terraform configurations
+- **🔍 Hooks pre-commit** - Appliquer les standards de qualité
+- **🧪 Ansible Lint** - Vérifier les bonnes pratiques Ansible
+- **📝 YAML Lint** - Valider le format des fichiers YAML
+- **🛡️ ShellCheck** - Vérifier les scripts shell
+- **🔧 Validateurs Terraform** - Valider les configurations Terraform
 
-## 👥 Contributors
+## 👥 Contributeurs
 
-* **Author**: Xavier GUERET
+- **Auteur**: Xavier GUERET
   [![GitHub followers](https://img.shields.io/github/followers/xgueret?style=social)](https://github.com/xgueret)[![Twitter Follow](https://img.shields.io/twitter/follow/xgueret?style=social)](https://x.com/hixmaster)[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/xavier-gueret-47bb3019b/)
 
-# 🤝 Contributing
+## 🤝 Contribuer
 
-**Contributions are welcome! Please feel free to submit a **[Pull Request](https://github.com/xgueret/local-projects/pulls).
+**Les contributions sont bienvenues ! N'hésitez pas à soumettre une **[Pull Request](https://github.com/xgueret/local-projects/pulls).

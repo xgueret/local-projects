@@ -3,4 +3,5 @@ open_webui_version: "v0.6.13"
 open_webui_container_name: "open-webui"
 open_webui_app_path: "{{ app_path }}/openWebUI"
 open_webui_port: 8080
-open_webui_ollama_base_url: "http://localhost:11434"
+open_webui_ollama_base_url: "http://ollama:11434"
+open_webui_use_ollama_docker: false
