@@ -1,6 +1,7 @@
 ---
-app_user: "{{ ansible_user_id }}"
-app_group: "{{ ansible_user_gid }}"
+app_user: "{{ app_user_vault }}"
+app_group: "{{ app_user_vault }}"
+
 app_path: "$HOME/Workspace/local/app"
 app_network: local_network
 
