@@ -1,10 +1,11 @@
 ---
+# ---
 - name: Ensure app directory exists
   ansible.builtin.file:
     path: "{{ open_webui_app_path }}"
     state: directory
-    owner: "{{ app_user }}"
-    group: "{{ app_group }}"
+    # owner: "{{ app_user }}"
+    # group: "{{ app_group }}"
     mode: '0770'
 
 - name: Deploy environment file
