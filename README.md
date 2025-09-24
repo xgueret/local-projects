@@ -3,53 +3,55 @@
 ![Stars](https://img.shields.io/github/stars/xgueret/local-projects?style=social) ![Last Commit](https://img.shields.io/github/last-commit/xgueret/local-projects)![Status](https://img.shields.io/badge/Status-Active-brightgreen) ![License](https://img.shields.io/badge/License-MIT-blue)
 ![Terraform](https://img.shields.io/badge/Terraform-%E2%89%A51.11.0-623CE4) ![Ansible](https://img.shields.io/badge/Ansible-2.14+-EE0000)
 
-🛠️ Un environnement de développement local automatisé pour déployer diverses applications avec Ansible et Docker.
+Automated local development environment for deploying various applications with Ansible and Docker.
 
-## 📋 Aperçu
+## 📋 Overview
 
-Ce projet fournit une configuration automatisée pour un environnement de développement local avec plusieurs applications utiles via des playbooks Ansible. L'infrastructure est conteneurisée avec Docker et peut être facilement déployée sur n'importe quel système ayant les dépendances requises.
+This project provides automated configuration for a local development environment with multiple useful applications via Ansible playbooks. The infrastructure is containerized with Docker and can be easily deployed on any system with the required dependencies.
 
-## 📱 Applications
+## 📱 Available Applications
 
-Les applications suivantes sont incluses :
+The following applications can be deployed:
 
-- **🏠 Homer** - Un dashboard pour organiser et accéder à tous vos services web
-- **🎨 Excalidraw** - Un tableau blanc collaboratif virtuel
-- **🗄️ PostgreSQL** - Un serveur de base de données partagé
-- **📊 Planka** - Un système de gestion de projet open-source (style Kanban)
-- **🤖 Ollama** - Infrastructure pour exécuter des modèles de langage locaux
-- **🌐 Open WebUI** - Une interface utilisateur pour interagir avec les modèles Ollama
+- **🏠 Homer** - A dashboard to organize and access all your web services
+- **🎨 Excalidraw** - A virtual collaborative whiteboard
+- **🗄️ PostgreSQL** - A shared database server
+- **📊 Planka** - An open-source project management system (Kanban-style)
+- **🤖 Ollama** - Infrastructure for running local language models
+- **🌐 Open WebUI** - A web interface to interact with Ollama models
 
-## ✅ Prérequis
+*Note: The configuration currently has `deploy_homer: true`, `deploy_excalidraw: true`, `deploy_open_webui: true`, `deploy_ollama: true`, and `deploy_planka: false` by default.*
+
+## ✅ Prerequisites
 
 - Python 3.x
 - Ansible
-- Docker et Docker Compose
+- Docker and Docker Compose
 - Git
-- [Installing the NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
+- [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) (only required if using GPU acceleration with Ollama)
 
 ## 📥 Installation
 
-1. Cloner le dépôt :
+1. Clone the repository:
 
 ```bash
 git clone https://github.com/xgueret/local-projects.git
 cd local-projects
 ```
 
-2. Installer les dépendances :
+2. Install Python dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Installer les collections Ansible :
+3. Install Ansible collections:
 
 ```bash
-ansible-galaxy collection install -r collections.yml
+ansible-galaxy collection install -r requirements.yml
 ```
 
-4. Configurer les hooks pre-commit :
+4. Configure pre-commit hooks:
 
 ```bash
 pre-commit install
@@ -57,110 +59,153 @@ pre-commit install
 
 ## ⚙️ Configuration
 
-Le projet utilise Ansible Vault pour stocker les informations sensibles. Créez un fichier de mot de passe :
+The project uses Ansible Vault to store sensitive information. Create a password file:
 
 ```bash
+# Create directory if it doesn't exist
+mkdir -p ~/Workspace/.vault
+
+# Create password file
 echo "your-vault-password" > ~/Workspace/.vault/.vault_password
 ```
 
-Modifiez les variables selon vos besoins :
+You can modify configuration variables as needed:
 
-    group_vars/all/main.yml - Configuration générale
+- `group_vars/all/main.yml` - General configuration
+- `group_vars/all/postgres.yml` - PostgreSQL-specific configuration
+- `group_vars/all/vault/` - Contains sensitive, encrypted information
 
-    group_vars/all/vault/ - Contient les informations sensibles chiffrées
+## 🚀 Deployment
 
-## 🚀 Déploiement
-
-Déployer toutes les applications :
+Deploy all enabled applications:
 
 ```bash
 ansible-playbook deploy.yml
 ```
 
-Déployer des applications spécifiques avec des tags :
+Deploy specific applications with tags:
 
 ```bash
-ansible-playbook deploy.yml --tags "homer,postgres"
+ansible-playbook deploy.yml --tags "excalidraw,ollama,open_webui"
 ```
 
-Tags disponibles :
+Available tags:
 
-* homer
-* excalidraw
-* postgres
-* planka
-* ollama
-* open_webui
+* `excalidraw`
+* `ollama`
+* `open_webui`
+* `postgres` (currently commented out in the playbook)
+* `homer` (currently commented out in the playbook)
+* `planka` (currently disabled in main.yml)
 
-## 🔗 Accès aux applications
+## 🔗 Application Access
 
-Après déploiement, les applications seront disponibles sur :
+After deployment, the applications will be available at:
 
-* 🏠 Homer: http://localhost:8081
-* 🎨 Excalidraw: http://localhost:8082
-* 🤖 Open WebUI: http://localhost:8080
-* 🗄️ PostgreSQL: localhost:5432
-* 🤖 Ollama API: http://localhost:11434
+* 🎨 **Excalidraw**: http://localhost:8082
+* 🤖 **Ollama UI**: http://localhost:8080
+* 🤖 **Ollama API**: http://localhost:11434
+* 🗄️ **PostgreSQL**: localhost:5432 (internal access only)
 
-## 📁 Structure du projet
+*Note: Homer is configured to run on port 8081 but is commented out in the playbook.*
 
-```bash
-├── ansible.cfg                 # Configuration Ansible
-├── collections.yml             # Collections Ansible requises
-├── deploy.yml                  # Playbook principal
-├── group_vars/                 # Variables pour tous les hôtes
+## 📁 Project Structure
+
+```
+├── ansible.cfg                 # Ansible configuration
+├── deploy.yml                  # Main playbook
+├── group_vars/                 # Variables for all hosts
 │   └── all/
-│       ├── main.yml            # Variables générales
-│       └── vault/              # Variables sensibles chiffrées
-├── inventory.yml               # Inventaire Ansible
-├── requirements.txt            # Dépendances Python
-└── roles/                      # Rôles spécifiques aux applications
-    ├── common/                 # Tâches communes
-    ├── excalidraw/
-    ├── homer/
-    ├── ollama/
-    ├── open_webui/
-    ├── planka/
-    └── postgres/
+│       ├── main.yml            # General variables (defines which apps to deploy)
+│       ├── postgres.yml        # PostgreSQL specific variables
+│       └── vault/              # Sensitive encrypted variables
+├── inventory.yml               # Ansible inventory
+├── requirements.txt            # Python dependencies
+├── requirements.yml            # Ansible collection dependencies
+├── roles/                      # Application-specific roles
+│   ├── common/                 # Common tasks
+│   ├── excalidraw/
+│   ├── homer/
+│   ├── ollama/
+│   ├── open_webui/
+│   ├── planka/
+│   └── postgres/
+├── github/                     # Terraform configuration for GitHub management
+└── .vscode/                    # VSCode settings
 ```
 
-## ☁️ Infrastructure as Code
+## 🤖 Ollama Configuration
 
-Le projet inclut des configurations Terraform pour gérer les dépôts GitHub :
+The Ollama integration includes:
+- Automatic GPU support detection and configuration
+- Automatic CLI extraction from container for local usage
+- Profile script for easy CLI access via `ollama-local` command
+- Health checks to ensure the API is ready
 
-1. Aller dans le dossier GitHub :
+For GPU acceleration, ensure the NVIDIA Container Toolkit is installed and the `ollama_use_gpu` variable is set to `true` in your configuration.
+
+## ☁️ GitHub Infrastructure as Code
+
+The project includes Terraform configurations to manage GitHub repositories in the `github/` directory:
+
+1. Change to the GitHub directory:
 
 ```bash
 cd github
 ```
 
-2. Initialiser Terraform :
+2. Initialize Terraform:
 
 ```bash
 terraform init
 ```
 
-3. Déployer l'infrastructure :
+3. Deploy the infrastructure:
 
 ```bash
 terraform apply
 ```
 
-## 👨‍💻 Développement
+## 👨‍💻 Development
 
-Le projet inclut plusieurs outils pour la qualité du code :
+The project includes several tools for code quality:
 
-- **🔍 Hooks pre-commit** - Appliquer les standards de qualité
-- **🧪 Ansible Lint** - Vérifier les bonnes pratiques Ansible
-- **📝 YAML Lint** - Valider le format des fichiers YAML
-- **🛡️ ShellCheck** - Vérifier les scripts shell
-- **🔧 Validateurs Terraform** - Valider les configurations Terraform
+- **🔍 Pre-commit hooks** - Apply quality standards
+- **🧪 Ansible Lint** - Check Ansible best practices
+- **📝 YAML Lint** - Validate YAML file formats
+- **🛡️ ShellCheck** - Check shell scripts
+- **🔧 Terraform validators** - Validate Terraform configurations
 
-## 👥 Contributeurs
+## 🚨 Troubleshooting
 
-- **Auteur**: Xavier GUERET
+### Common Issues:
+
+1. **Permission errors with Docker**:
+   - Ensure your user is in the `docker` group: `sudo usermod -aG docker $USER`
+   - Log out and back in for changes to take effect
+
+2. **Vault password issues**:
+   - Ensure the vault password file is at `~/Workspace/.vault/.vault_password`
+   - Check that the password is correct
+
+3. **GPU support for Ollama**:
+   - Install NVIDIA Container Toolkit
+   - Verify with `docker info | grep -i nvidia`
+   - Set `ollama_use_gpu: true` in your configuration
+
+4. **Port conflicts**:
+   - Check if required ports are already in use: `sudo netstat -tulpn | grep :PORT`
+   - Modify ports in `group_vars/all/*.yml` files as needed
+
+## 👥 Author
+
+- **Xavier GUERET**
   [![GitHub followers](https://img.shields.io/github/followers/xgueret?style=social)](https://github.com/xgueret)[![Twitter Follow](https://img.shields.io/twitter/follow/xgueret?style=social)](https://x.com/hixmaster)[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/xavier-gueret-47bb3019b/)
 
-## 🤝 Contribuer
+## 🤝 Contributing
 
-**Les contributions sont bienvenues ! N'hésitez pas à soumettre une **[Pull Request](https://github.com/xgueret/local-projects/pulls).
+**Contributions are welcome! Please feel free to submit a **[Pull Request](https://github.com/xgueret/local-projects/pulls).
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
