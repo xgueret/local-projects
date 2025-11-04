@@ -41,6 +41,7 @@
 **Local Projects** is a fully automated infrastructure-as-code solution for deploying a complete local development environment. Using Ansible playbooks and Docker containers, it allows you to quickly spin up essential development tools and services on any system.
 
 Perfect for developers who want:
+
 - 🔄 Reproducible development environments
 - 🐳 Containerized applications for isolation
 - 🤖 AI/LLM capabilities with Ollama and Open WebUI
@@ -63,18 +64,19 @@ Perfect for developers who want:
 
 The following applications can be deployed and managed through this project:
 
-| Application | Description | Status | Port | Official Site |
-|------------|-------------|--------|------|---------------|
-| 🏠 **Homer** | Beautiful dashboard to organize all your web services | ✅ Available | 8081 | [homer](https://github.com/bastienwirtz/homer) |
-| 🎨 **Excalidraw** | Virtual collaborative whiteboard for sketching diagrams | ✅ Enabled by default | 8082 | [excalidraw.com](https://excalidraw.com/) |
-| 🗄️ **PostgreSQL** | Powerful open-source relational database | ⚠️ Available (commented out) | 5432 | [postgresql.org](https://www.postgresql.org/) |
-| 📊 **Planka** | Elegant open-source project management (Trello alternative) | ⚠️ Available (disabled) | 8083 | [planka.app](https://planka.app/) |
-| 🤖 **Ollama** | Run large language models locally (Llama 3, Mistral, etc.) | ✅ Enabled by default | 11434 | [ollama.ai](https://ollama.ai/) |
-| 🌐 **Open WebUI** | Feature-rich web interface for Ollama and OpenAI APIs | ✅ Enabled by default | 8080 | [openwebui.com](https://www.openwebui.com/) |
+| Application              | Description                                                 | Status                         | Port  | Official Site                               |
+| ------------------------ | ----------------------------------------------------------- | ------------------------------ | ----- | ------------------------------------------- |
+| 🏠**Homer**        | Beautiful dashboard to organize all your web services       | ✅ Available                   | 8081  | [homer](https://github.com/bastienwirtz/homer) |
+| 🎨**Excalidraw**   | Virtual collaborative whiteboard for sketching diagrams     | ✅ Enabled by default          | 8082  | [excalidraw.com](https://excalidraw.com/)      |
+| 🗄️**PostgreSQL** | Powerful open-source relational database                    | ⚠️ Available (commented out) | 5432  | [postgresql.org](https://www.postgresql.org/)  |
+| 📊**Planka**       | Elegant open-source project management (Trello alternative) | ⚠️ Available (disabled)      | 8083  | [planka.app](https://planka.app/)              |
+| 🤖**Ollama**       | Run large language models locally (Llama 3, Mistral, etc.)  | ✅ Enabled by default          | 11434 | [ollama.ai](https://ollama.ai/)                |
+| 🌐**Open WebUI**   | Feature-rich web interface for Ollama and OpenAI APIs       | ✅ Enabled by default          | 8080  | [openwebui.com](https://www.openwebui.com/)    |
 
 ### Current Configuration
 
 By default, the following applications are **enabled** in `group_vars/all/main.yml`:
+
 ```yaml
 deploy_homer: true
 deploy_excalidraw: true
@@ -107,6 +109,7 @@ ansible-playbook deploy.yml
 ```
 
 Access your applications:
+
 - Open WebUI: http://localhost:8080
 - Excalidraw: http://localhost:8082
 
@@ -116,14 +119,14 @@ For detailed setup instructions, see the [Installation](#-installation) section 
 
 Ensure you have the following installed on your system:
 
-| Requirement | Version | Purpose | Installation |
-|------------|---------|---------|--------------|
-| **Python** | 3.x | Run Ansible | [python.org](https://www.python.org/) |
-| **Ansible** | 2.14+ | Automation engine | `pip install ansible` |
-| **Docker** | Latest | Container runtime | [docs.docker.com](https://docs.docker.com/get-docker/) |
-| **Docker Compose** | Latest | Multi-container orchestration | Included with Docker Desktop |
-| **Git** | Latest | Version control | [git-scm.com](https://git-scm.com/) |
-| **NVIDIA Container Toolkit** | Latest | GPU acceleration (optional) | [NVIDIA Docs](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) |
+| Requirement                        | Version | Purpose                       | Installation                                                                                            |
+| ---------------------------------- | ------- | ----------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Python**                   | 3.x     | Run Ansible                   | [python.org](https://www.python.org/)                                                                      |
+| **Ansible**                  | 2.14+   | Automation engine             | `pip install ansible`                                                                                 |
+| **Docker**                   | Latest  | Container runtime             | [docs.docker.com](https://docs.docker.com/get-docker/)                                                     |
+| **Docker Compose**           | Latest  | Multi-container orchestration | Included with Docker Desktop                                                                            |
+| **Git**                      | Latest  | Version control               | [git-scm.com](https://git-scm.com/)                                                                        |
+| **NVIDIA Container Toolkit** | Latest  | GPU acceleration (optional)   | [NVIDIA Docs](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) |
 
 ### System Requirements
 
@@ -179,6 +182,7 @@ chmod 600 ~/Workspace/.vault/.vault_password
 ```
 
 2. The vault configuration is set in `ansible.cfg`:
+
 ```ini
 vault_password_file = ~/Workspace/.vault/.vault_password
 ```
@@ -187,13 +191,13 @@ vault_password_file = ~/Workspace/.vault/.vault_password
 
 You can customize the deployment by modifying these configuration files:
 
-| File | Purpose | Contains |
-|------|---------|----------|
-| `group_vars/all/main.yml` | **Main configuration** | App path, network settings, deployment flags |
-| `group_vars/all/postgres.yml` | PostgreSQL settings | Database configuration |
-| `group_vars/all/vault/` | **Sensitive data (encrypted)** | Passwords, API keys, secrets |
-| `roles/*/vars/main.yml` | App-specific settings | Ports, versions, container names |
-| `ansible.cfg` | Ansible behavior | Inventory, vault, connection settings |
+| File                            | Purpose                              | Contains                                     |
+| ------------------------------- | ------------------------------------ | -------------------------------------------- |
+| `group_vars/all/main.yml`     | **Main configuration**         | App path, network settings, deployment flags |
+| `group_vars/all/postgres.yml` | PostgreSQL settings                  | Database configuration                       |
+| `group_vars/all/vault/`       | **Sensitive data (encrypted)** | Passwords, API keys, secrets                 |
+| `roles/*/vars/main.yml`       | App-specific settings                | Ports, versions, container names             |
+| `ansible.cfg`                 | Ansible behavior                     | Inventory, vault, connection settings        |
 
 ### Enabling/Disabling Applications
 
@@ -213,12 +217,14 @@ deploy_planka: true  # Change to true to enable
 Each application has its own configuration in `roles/<app_name>/vars/main.yml`. For example:
 
 **Ollama** (`roles/ollama/vars/main.yml`):
+
 ```yaml
 ollama_use_gpu: true  # Enable/disable GPU acceleration
 ollama_port: "11434"  # Change port if needed
 ```
 
 **Open WebUI** (`roles/open_webui/vars/main.yml`):
+
 ```yaml
 open_webui_version: "v0.6.34"  # Specify version
 open_webui_port: 8080          # Web interface port
@@ -236,6 +242,7 @@ ansible-playbook deploy.yml
 ```
 
 This will:
+
 1. Create the application directory structure
 2. Set up a Docker network (`local_network`)
 3. Deploy all applications where `deploy_<app>: true` in configuration
@@ -255,14 +262,14 @@ ansible-playbook deploy.yml --tags "excalidraw"
 
 ### Available Deployment Tags
 
-| Tag | Application | Status |
-|-----|-------------|--------|
-| `excalidraw` | Excalidraw whiteboard | ✅ Active in playbook |
-| `ollama` | Ollama LLM engine | ✅ Active in playbook |
-| `open_webui` | Open WebUI interface | ✅ Active in playbook |
-| `homer` | Homer dashboard | ⚠️ Commented out in playbook |
-| `postgres` | PostgreSQL database | ⚠️ Commented out in playbook |
-| `planka` | Planka project management | ⚠️ Commented out in playbook |
+| Tag            | Application               | Status                         |
+| -------------- | ------------------------- | ------------------------------ |
+| `excalidraw` | Excalidraw whiteboard     | ✅ Active in playbook          |
+| `ollama`     | Ollama LLM engine         | ✅ Active in playbook          |
+| `open_webui` | Open WebUI interface      | ✅ Active in playbook          |
+| `homer`      | Homer dashboard           | ⚠️ Commented out in playbook |
+| `postgres`   | PostgreSQL database       | ⚠️ Commented out in playbook |
+| `planka`     | Planka project management | ⚠️ Commented out in playbook |
 
 ### Verify Deployment
 
@@ -273,6 +280,7 @@ docker ps
 ```
 
 You should see containers named:
+
 - `ollama`
 - `open-webui`
 - `excalidraw`
@@ -304,6 +312,7 @@ ansible-playbook uninstall.yml
 ### What Gets Removed
 
 The uninstall playbook performs the following actions:
+
 - ✅ Stops and removes Docker containers
 - ✅ Removes Ollama CLI tools (if uninstalling Ollama)
 - ❌ **Preserves** data volumes (must be manually removed if desired)
@@ -313,14 +322,14 @@ The uninstall playbook performs the following actions:
 
 All applications support uninstallation via tags:
 
-| Tag | Application |
-|-----|-------------|
-| `postgres` | PostgreSQL database |
-| `homer` | Homer dashboard |
-| `excalidraw` | Excalidraw whiteboard |
-| `planka` | Planka project management |
-| `ollama` | Ollama LLM engine |
-| `open_webui` | Open WebUI interface |
+| Tag            | Application               |
+| -------------- | ------------------------- |
+| `postgres`   | PostgreSQL database       |
+| `homer`      | Homer dashboard           |
+| `excalidraw` | Excalidraw whiteboard     |
+| `planka`     | Planka project management |
+| `ollama`     | Ollama LLM engine         |
+| `open_webui` | Open WebUI interface      |
 
 ### Manual Cleanup (Optional)
 
@@ -341,24 +350,26 @@ docker network rm local_network
 
 Once deployed, access your applications through these URLs:
 
-| Application | URL | Description |
-|------------|-----|-------------|
-| 🌐 **Open WebUI** | http://localhost:8080 | Web interface for Ollama models |
-| 🎨 **Excalidraw** | http://localhost:8082 | Collaborative whiteboard |
-| 🏠 **Homer** | http://localhost:8081 | Dashboard (if enabled) |
-| 📊 **Planka** | http://localhost:8083 | Project management (if enabled) |
-| 🤖 **Ollama API** | http://localhost:11434 | Direct API access for Ollama |
-| 🗄️ **PostgreSQL** | localhost:5432 | Database (internal only) |
+| Application              | URL                    | Description                     |
+| ------------------------ | ---------------------- | ------------------------------- |
+| 🌐**Open WebUI**   | http://localhost:8080  | Web interface for Ollama models |
+| 🎨**Excalidraw**   | http://localhost:8082  | Collaborative whiteboard        |
+| 🏠**Homer**        | http://localhost:8081  | Dashboard (if enabled)          |
+| 📊**Planka**       | http://localhost:8083  | Project management (if enabled) |
+| 🤖**Ollama API**   | http://localhost:11434 | Direct API access for Ollama    |
+| 🗄️**PostgreSQL** | localhost:5432         | Database (internal only)        |
 
 ### First-Time Setup
 
 **For Open WebUI:**
+
 1. Navigate to http://localhost:8080
 2. Create your admin account on first visit
 3. Download models from the Settings > Models section
 4. Start chatting!
 
 **For Ollama CLI:**
+
 ```bash
 # The Ollama CLI is automatically installed and available
 ollama-local pull llama3  # Download a model
@@ -430,14 +441,14 @@ local-projects/
 
 ### Key Directories Explained
 
-| Directory | Purpose |
-|-----------|---------|
-| `roles/` | Contains Ansible roles for each application (modular architecture) |
-| `group_vars/all/` | Global configuration variables and deployment settings |
-| `group_vars/all/vault/` | Encrypted secrets (passwords, API keys) using Ansible Vault |
-| `docs/` | Detailed documentation and configuration guides |
-| `scripts/` | Helper scripts for testing and maintenance |
-| `github/` | Terraform configurations for managing GitHub infrastructure |
+| Directory                 | Purpose                                                            |
+| ------------------------- | ------------------------------------------------------------------ |
+| `roles/`                | Contains Ansible roles for each application (modular architecture) |
+| `group_vars/all/`       | Global configuration variables and deployment settings             |
+| `group_vars/all/vault/` | Encrypted secrets (passwords, API keys) using Ansible Vault        |
+| `docs/`                 | Detailed documentation and configuration guides                    |
+| `scripts/`              | Helper scripts for testing and maintenance                         |
+| `github/`               | Terraform configurations for managing GitHub infrastructure        |
 
 ## 📚 Documentation
 
@@ -448,6 +459,7 @@ local-projects/
 ## 🤖 Ollama Configuration
 
 The Ollama integration includes:
+
 - Automatic GPU support detection and configuration
 - Automatic CLI extraction from container for local usage
 - Profile script for easy CLI access via `ollama-local` command
@@ -460,12 +472,14 @@ For GPU acceleration, ensure the NVIDIA Container Toolkit is installed and the `
 Open WebUI needs to communicate with Ollama. The connection URL can be configured in two ways:
 
 **Option 1: Via container name (recommended)**
+
 ```yaml
 # In group_vars/all/main.yml
 open_webui_ollama_base_url: "http://ollama:11434"
 ```
 
 **Option 2: Via host (current default)**
+
 ```yaml
 # In roles/open_webui/vars/main.yml
 open_webui_ollama_base_url: "http://127.0.0.1:11434/"
@@ -511,18 +525,18 @@ pre-commit install
 
 All of these run automatically on commit:
 
-| Tool | Purpose | Files Checked |
-|------|---------|---------------|
-| **🔍 Ansible Lint** | Enforces Ansible best practices | `*.yml` playbooks and roles |
-| **📝 YAML Lint** | Validates YAML syntax and formatting | `*.yml`, `*.yaml` |
-| **🛡️ ShellCheck** | Identifies issues in shell scripts | `*.sh` |
-| **🔧 Terraform fmt** | Formats Terraform files | `*.tf` |
-| **🔧 Terraform validate** | Validates Terraform syntax | `*.tf` |
-| **🔧 TFLint** | Lints Terraform configurations | `*.tf` |
-| **🐍 Flake8** | Python code linter | `*.py` |
-| **🔐 Vault Check** | Ensures sensitive files are encrypted | `vault/*` |
-| **✂️ Trailing Whitespace** | Removes trailing whitespace | All files |
-| **📄 EOF Fixer** | Ensures files end with newline | All files |
+| Tool                               | Purpose                               | Files Checked                 |
+| ---------------------------------- | ------------------------------------- | ----------------------------- |
+| **🔍 Ansible Lint**          | Enforces Ansible best practices       | `*.yml` playbooks and roles |
+| **📝 YAML Lint**             | Validates YAML syntax and formatting  | `*.yml`, `*.yaml`         |
+| **🛡️ ShellCheck**          | Identifies issues in shell scripts    | `*.sh`                      |
+| **🔧 Terraform fmt**         | Formats Terraform files               | `*.tf`                      |
+| **🔧 Terraform validate**    | Validates Terraform syntax            | `*.tf`                      |
+| **🔧 TFLint**                | Lints Terraform configurations        | `*.tf`                      |
+| **🐍 Flake8**                | Python code linter                    | `*.py`                      |
+| **🔐 Vault Check**           | Ensures sensitive files are encrypted | `vault/*`                   |
+| **✂️ Trailing Whitespace** | Removes trailing whitespace           | All files                     |
+| **📄 EOF Fixer**             | Ensures files end with newline        | All files                     |
 
 ### Manual Testing
 
@@ -551,6 +565,7 @@ ansible-playbook deploy.yml --check --diff
 7. Update documentation
 
 Example role structure:
+
 ```
 roles/myapp/
 ├── tasks/
@@ -572,6 +587,7 @@ roles/myapp/
 **Problem:** `permission denied while trying to connect to the Docker daemon socket`
 
 **Solution:**
+
 ```bash
 # Add your user to the docker group
 sudo usermod -aG docker $USER
@@ -582,6 +598,7 @@ sudo usermod -aG docker $USER
 # Verify
 docker ps
 ```
+
 </details>
 
 <details>
@@ -590,6 +607,7 @@ docker ps
 **Problem:** `ERROR! Attempting to decrypt but no vault secrets found`
 
 **Solution:**
+
 ```bash
 # Ensure the vault password file exists
 ls -la ~/Workspace/.vault/.vault_password
@@ -602,6 +620,7 @@ chmod 600 ~/Workspace/.vault/.vault_password
 # Verify path in ansible.cfg
 grep vault_password_file ansible.cfg
 ```
+
 </details>
 
 <details>
@@ -610,6 +629,7 @@ grep vault_password_file ansible.cfg
 **Problem:** Ollama not using GPU acceleration
 
 **Solution:**
+
 ```bash
 # 1. Install NVIDIA Container Toolkit
 # Follow: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
@@ -624,6 +644,7 @@ ollama_use_gpu: true
 # 4. Redeploy
 ansible-playbook deploy.yml --tags "ollama"
 ```
+
 </details>
 
 <details>
@@ -632,6 +653,7 @@ ansible-playbook deploy.yml --tags "ollama"
 **Problem:** `Error: bind: address already in use`
 
 **Solution:**
+
 ```bash
 # Find what's using the port (example for port 8080)
 sudo lsof -i :8080
@@ -645,6 +667,7 @@ sudo netstat -tulpn | grep :8080
 # Redeploy
 ansible-playbook deploy.yml --tags "open_webui"
 ```
+
 </details>
 
 <details>
@@ -653,6 +676,7 @@ ansible-playbook deploy.yml --tags "open_webui"
 **Problem:** Open WebUI shows "Cannot connect to Ollama"
 
 **Solution:**
+
 ```bash
 # 1. Verify Ollama is running
 docker ps | grep ollama
@@ -669,6 +693,7 @@ open_webui_ollama_base_url: "http://127.0.0.1:11434"  # Use host
 # 4. Redeploy Open WebUI
 ansible-playbook deploy.yml --tags "open_webui"
 ```
+
 </details>
 
 <details>
@@ -677,6 +702,7 @@ ansible-playbook deploy.yml --tags "open_webui"
 **Problem:** Pre-commit hooks prevent commits
 
 **Solution:**
+
 ```bash
 # Run pre-commit manually to see errors
 pre-commit run --all-files
@@ -687,6 +713,7 @@ pre-commit autoupdate
 # If you need to skip hooks temporarily (not recommended)
 git commit --no-verify -m "message"
 ```
+
 </details>
 
 ### Getting Help
@@ -694,6 +721,7 @@ git commit --no-verify -m "message"
 If you encounter issues not covered here:
 
 1. **Check the logs:**
+
    ```bash
    # Ansible output
    ansible-playbook deploy.yml -vvv
@@ -701,9 +729,7 @@ If you encounter issues not covered here:
    # Docker container logs
    docker logs <container_name>
    ```
-
 2. **Search existing issues:** [GitHub Issues](https://github.com/xgueret/local-projects/issues)
-
 3. **Create a new issue:** Provide details about your environment, error messages, and steps to reproduce
 
 ## 🤝 Contributing
@@ -713,24 +739,25 @@ Contributions are **welcome and appreciated!** This project benefits from commun
 ### How to Contribute
 
 1. **Fork the repository**
+
    ```bash
    # Click "Fork" on GitHub, then:
    git clone https://github.com/YOUR-USERNAME/local-projects.git
    cd local-projects
    ```
-
 2. **Create a feature branch**
+
    ```bash
    git checkout -b feature/amazing-feature
    ```
-
 3. **Make your changes**
+
    - Add a new application role
    - Improve documentation
    - Fix bugs
    - Enhance existing features
-
 4. **Test your changes**
+
    ```bash
    # Run pre-commit checks
    pre-commit run --all-files
@@ -738,25 +765,27 @@ Contributions are **welcome and appreciated!** This project benefits from commun
    # Test deployment
    ansible-playbook deploy.yml --check
    ```
-
 5. **Commit your changes**
+
    ```bash
    git add .
    git commit -m "feat: add amazing feature"
    ```
 
    Follow [Conventional Commits](https://www.conventionalcommits.org/) format:
+
    - `feat:` - New features
    - `fix:` - Bug fixes
    - `docs:` - Documentation changes
    - `refactor:` - Code refactoring
    - `test:` - Adding tests
    - `chore:` - Maintenance tasks
-
 6. **Push and create Pull Request**
+
    ```bash
    git push origin feature/amazing-feature
    ```
+
    Then create a Pull Request on GitHub
 
 ### Contribution Ideas
@@ -791,6 +820,7 @@ Contributions are **welcome and appreciated!** This project benefits from commun
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 ### What this means:
+
 - ✅ Commercial use
 - ✅ Modification
 - ✅ Distribution
@@ -803,7 +833,5 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 <div align="center">
 
 **⭐ If this project helped you, please consider giving it a star! ⭐**
-
-Made with ❤️ by [Xavier GUERET](https://github.com/xgueret)
 
 </div>
