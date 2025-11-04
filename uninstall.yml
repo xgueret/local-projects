@@ -1,0 +1,48 @@
+---
+- name: Uninstall local projects
+  hosts: local
+  become: false
+  gather_facts: true
+
+  tasks:
+    - name: Uninstall PostgreSQL
+      ansible.builtin.import_role:
+        name: postgres
+        tasks_from: uninstall
+      tags:
+        - postgres
+
+    - name: Uninstall Homer
+      ansible.builtin.import_role:
+        name: homer
+        tasks_from: uninstall
+      tags:
+        - homer
+
+    - name: Uninstall Excalidraw
+      ansible.builtin.import_role:
+        name: excalidraw
+        tasks_from: uninstall
+      tags:
+        - excalidraw
+
+    - name: Uninstall Planka
+      ansible.builtin.import_role:
+        name: planka
+        tasks_from: uninstall
+      tags:
+        - planka
+
+    - name: Uninstall Ollama
+      ansible.builtin.import_role:
+        name: ollama
+        tasks_from: uninstall
+      tags:
+        - ollama
+
+    - name: Uninstall Open WebUI
+      ansible.builtin.import_role:
+        name: open_webui
+        tasks_from: uninstall
+      tags:
+        - open_webui

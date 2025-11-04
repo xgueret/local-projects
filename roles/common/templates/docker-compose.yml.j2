@@ -25,6 +25,12 @@ services:
       - "{{ volume }}"
 {% endfor %}
 {% endif %}
+{% if common_app_extra_hosts is defined %}
+    extra_hosts:
+{% for host in common_app_extra_hosts %}
+      - "{{ host }}"
+{% endfor %}
+{% endif %}
 {% if common_network_mode is defined %}
     network_mode: host
 {% else %}

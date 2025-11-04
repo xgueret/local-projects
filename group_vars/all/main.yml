@@ -2,7 +2,7 @@
 app_user: "{{ app_user_vault }}"
 app_group: "{{ app_user_vault }}"
 
-app_path: "$HOME/Workspace/local/app"
+app_path: "$HOME/Workspace/07-local/app"
 app_network: local_network
 
 deploy_homer: true

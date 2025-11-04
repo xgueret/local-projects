@@ -1,0 +1,14 @@
+---
+- name: Stop and remove Planka Docker containers
+  community.docker.docker_compose_v2:
+    project_src: "{{ planka_app_path }}"
+    state: absent
+  failed_when: false
+
+- name: Display uninstall summary
+  ansible.builtin.debug:
+    msg:
+      - "📊 Planka uninstalled successfully!"
+      - "Note: Data volumes are preserved."
+      - "To remove data volumes, run: docker volume rm planka-storage"
+      - "To remove app directory, run: rm -rf {{ planka_app_path }}"

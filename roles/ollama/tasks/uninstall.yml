@@ -1,0 +1,35 @@
+---
+- name: Stop and remove Ollama Docker containers
+  community.docker.docker_compose_v2:
+    project_src: "{{ ollama_app_path }}"
+    state: absent
+  failed_when: false
+
+- name: Remove Ollama CLI wrapper
+  ansible.builtin.file:
+    path: /usr/local/bin/ollama-local
+    state: absent
+  become: true
+  failed_when: false
+
+- name: Remove Ollama CLI
+  ansible.builtin.file:
+    path: "{{ ollama_cli_path }}"
+    state: absent
+  become: true
+  failed_when: false
+
+- name: Remove Ollama profile script
+  ansible.builtin.file:
+    path: "{{ ollama_profile_script }}"
+    state: absent
+  become: true
+  failed_when: false
+
+- name: Display uninstall summary
+  ansible.builtin.debug:
+    msg:
+      - "🦙 Ollama uninstalled successfully!"
+      - "Note: Data volumes and configuration directories are preserved."
+      - "To remove data volumes, run: docker volume rm ollama-data"
+      - "To remove app directory, run: rm -rf {{ ollama_app_path }}"
