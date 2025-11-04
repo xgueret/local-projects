@@ -1,0 +1,63 @@
+---
+# Example configuration for group_vars/all/main.yml
+# Copy the variables you want to override to your actual group_vars/all/main.yml
+
+# =============================================================================
+# User and path configuration
+# =============================================================================
+app_user: "{{ app_user_vault }}"
+app_group: "{{ app_user_vault }}"
+
+app_path: "$HOME/Workspace/local/app"
+app_network: local_network
+
+# =============================================================================
+# Application deployment toggles
+# =============================================================================
+deploy_homer: true
+deploy_excalidraw: true
+deploy_open_webui: true
+deploy_ollama: true
+deploy_planka: false
+
+# =============================================================================
+# Open WebUI Configuration
+# =============================================================================
+
+# Recommended: Use container name for direct Docker network communication
+open_webui_ollama_base_url: "http://ollama:11434"
+
+# Alternative configurations:
+# open_webui_ollama_base_url: "http://127.0.0.1:11434/"  # Via host (default, may not work)
+# open_webui_ollama_base_url: "http://192.168.1.100:11434"  # Remote Ollama server
+
+# =============================================================================
+# Ollama Configuration
+# =============================================================================
+
+# Enable GPU support (requires NVIDIA Container Toolkit)
+# ollama_use_gpu: true
+# ollama_gpu_syntax: "modern"  # or "classic" for older Docker versions
+# ollama_keep_alive: "5m"
+
+# =============================================================================
+# Port Configuration (if you need to change defaults)
+# =============================================================================
+
+# open_webui_port: 8080
+# ollama_api_port: 11434
+# excalidraw_port: 8082
+# homer_port: 8081
+# planka_port: 3000
+
+# =============================================================================
+# Advanced Configuration
+# =============================================================================
+
+# Pull policy for Docker images
+# ollama_pull_policy: "missing"  # Options: always, missing, never
+# ollama_recreate_policy: "auto"  # Options: always, auto, never
+
+# Backup configuration for Ollama
+# ollama_backup_enabled: true
+# ollama_backup_dir: "{{ app_path }}/backups"
