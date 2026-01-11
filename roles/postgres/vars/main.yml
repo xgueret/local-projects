@@ -1,5 +1,0 @@
----
-postgres_app_path: "{{ app_path }}/postgres"
-postgres_image: postgres
-postgres_image_version: 15-alpine
-postgres_dbs: "{{ postgres_dbs_vault }}"

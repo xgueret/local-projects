@@ -44,8 +44,7 @@ Perfect for developers who want:
 
 - 🔄 Reproducible development environments
 - 🐳 Containerized applications for isolation
-- 🤖 AI/LLM capabilities with Ollama and Open WebUI
-- 📊 Project management and collaboration tools
+- 🎨 Collaborative tools (whiteboard, web interfaces)
 - 🔒 Secure configuration with Ansible Vault
 
 ## ✨ Features
@@ -57,35 +56,25 @@ Perfect for developers who want:
 - **🎨 Customizable** - Easy configuration through YAML variables
 - **🔄 Version Controlled** - Infrastructure as Code approach
 - **📦 Pre-configured** - Ready-to-use setups with sensible defaults
-- **🚀 GPU Support** - NVIDIA GPU acceleration for Ollama (optional)
 - **✅ Quality Assured** - Pre-commit hooks for code quality (Ansible Lint, YAML Lint, ShellCheck, Terraform validators)
 
 ## 📱 Available Applications
 
 The following applications can be deployed and managed through this project:
 
-| Application              | Description                                                 | Status                         | Port  | Official Site                               |
-| ------------------------ | ----------------------------------------------------------- | ------------------------------ | ----- | ------------------------------------------- |
-| 🏠**Homer**        | Beautiful dashboard to organize all your web services       | ✅ Available                   | 8081  | [homer](https://github.com/bastienwirtz/homer) |
-| 🎨**Excalidraw**   | Virtual collaborative whiteboard for sketching diagrams     | ✅ Enabled by default          | 8082  | [excalidraw.com](https://excalidraw.com/)      |
-| 🗄️**PostgreSQL** | Powerful open-source relational database                    | ⚠️ Available (commented out) | 5432  | [postgresql.org](https://www.postgresql.org/)  |
-| 📊**Planka**       | Elegant open-source project management (Trello alternative) | ⚠️ Available (disabled)      | 8083  | [planka.app](https://planka.app/)              |
-| 🤖**Ollama**       | Run large language models locally (Llama 3, Mistral, etc.)  | ✅ Enabled by default          | 11434 | [ollama.ai](https://ollama.ai/)                |
-| 🌐**Open WebUI**   | Feature-rich web interface for Ollama and OpenAI APIs       | ✅ Enabled by default          | 8080  | [openwebui.com](https://www.openwebui.com/)    |
+| Application            | Description                                             | Status                | Port | Official Site                          |
+| ---------------------- | ------------------------------------------------------- | --------------------- | ---- | -------------------------------------- |
+| 🎨**Excalidraw** | Virtual collaborative whiteboard for sketching diagrams | ✅ Enabled by default | 8082 | [excalidraw.com](https://excalidraw.com/) |
+| 🌐**Open WebUI** | Feature-rich web interface for AI/LLM APIs              | ✅ Enabled by default | 8080 | [openwebui.com](https://www.openwebui.com/) |
 
 ### Current Configuration
 
 By default, the following applications are **enabled** in `group_vars/all/main.yml`:
 
 ```yaml
-deploy_homer: true
 deploy_excalidraw: true
 deploy_open_webui: true
-deploy_ollama: true
-deploy_planka: false  # Disabled by default
 ```
-
-**Note:** PostgreSQL is available as a role but currently commented out in the main playbook.
 
 ## ⚡ Quick Start
 
@@ -119,21 +108,19 @@ For detailed setup instructions, see the [Installation](#-installation) section 
 
 Ensure you have the following installed on your system:
 
-| Requirement                        | Version | Purpose                       | Installation                                                                                            |
-| ---------------------------------- | ------- | ----------------------------- | ------------------------------------------------------------------------------------------------------- |
-| **Python**                   | 3.x     | Run Ansible                   | [python.org](https://www.python.org/)                                                                      |
-| **Ansible**                  | 2.14+   | Automation engine             | `pip install ansible`                                                                                 |
-| **Docker**                   | Latest  | Container runtime             | [docs.docker.com](https://docs.docker.com/get-docker/)                                                     |
-| **Docker Compose**           | Latest  | Multi-container orchestration | Included with Docker Desktop                                                                            |
-| **Git**                      | Latest  | Version control               | [git-scm.com](https://git-scm.com/)                                                                        |
-| **NVIDIA Container Toolkit** | Latest  | GPU acceleration (optional)   | [NVIDIA Docs](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) |
+| Requirement          | Version | Purpose                       | Installation                                       |
+| -------------------- | ------- | ----------------------------- | -------------------------------------------------- |
+| **Python**     | 3.x     | Run Ansible                   | [python.org](https://www.python.org/)                 |
+| **Ansible**    | 2.14+   | Automation engine             | `pip install ansible`                            |
+| **Docker**     | Latest  | Container runtime             | [docs.docker.com](https://docs.docker.com/get-docker/) |
+| **Docker Compose** | Latest  | Multi-container orchestration | Included with Docker Desktop                       |
+| **Git**        | Latest  | Version control               | [git-scm.com](https://git-scm.com/)                   |
 
 ### System Requirements
 
 - **OS**: Linux, macOS, or Windows (WSL2)
-- **RAM**: 4GB minimum (8GB+ recommended for Ollama)
-- **Disk**: 20GB free space minimum
-- **GPU** (optional): NVIDIA GPU with CUDA support for Ollama acceleration
+- **RAM**: 4GB minimum
+- **Disk**: 10GB free space minimum
 
 ## 📥 Installation
 
@@ -191,44 +178,38 @@ vault_password_file = ~/Workspace/.vault/.vault_password
 
 You can customize the deployment by modifying these configuration files:
 
-| File                            | Purpose                              | Contains                                     |
-| ------------------------------- | ------------------------------------ | -------------------------------------------- |
-| `group_vars/all/main.yml`     | **Main configuration**         | App path, network settings, deployment flags |
-| `group_vars/all/postgres.yml` | PostgreSQL settings                  | Database configuration                       |
-| `group_vars/all/vault/`       | **Sensitive data (encrypted)** | Passwords, API keys, secrets                 |
-| `roles/*/vars/main.yml`       | App-specific settings                | Ports, versions, container names             |
-| `ansible.cfg`                 | Ansible behavior                     | Inventory, vault, connection settings        |
+| File                        | Purpose                              | Contains                                     |
+| --------------------------- | ------------------------------------ | -------------------------------------------- |
+| `group_vars/all/main.yml` | **Main configuration**         | App path, network settings, deployment flags |
+| `group_vars/all/vault/`   | **Sensitive data (encrypted)** | Passwords, API keys, secrets                 |
+| `roles/*/vars/main.yml`   | App-specific settings                | Ports, versions, container names             |
+| `ansible.cfg`             | Ansible behavior                     | Inventory, vault, connection settings        |
 
 ### Enabling/Disabling Applications
 
 Edit `group_vars/all/main.yml` to control which applications are deployed:
 
 ```yaml
-# Example: Enable all applications
-deploy_homer: true
 deploy_excalidraw: true
 deploy_open_webui: true
-deploy_ollama: true
-deploy_planka: true  # Change to true to enable
 ```
 
 ### Customizing Application Settings
 
 Each application has its own configuration in `roles/<app_name>/vars/main.yml`. For example:
 
-**Ollama** (`roles/ollama/vars/main.yml`):
+**Excalidraw** (`roles/excalidraw/vars/main.yml`):
 
 ```yaml
-ollama_use_gpu: true  # Enable/disable GPU acceleration
-ollama_port: "11434"  # Change port if needed
+excalidraw_version: latest  # Specify version
+excalidraw_port: "8082"     # Web interface port
 ```
 
 **Open WebUI** (`roles/open_webui/vars/main.yml`):
 
 ```yaml
-open_webui_version: "v0.6.34"  # Specify version
+open_webui_version: "v0.6.36"  # Specify version
 open_webui_port: 8080          # Web interface port
-open_webui_ollama_base_url: "http://127.0.0.1:11434"  # Ollama connection
 ```
 
 ## 🚀 Deployment
@@ -253,23 +234,19 @@ This will:
 Use tags to deploy only specific applications:
 
 ```bash
-# Deploy only Ollama and Open WebUI
-ansible-playbook deploy.yml --tags "ollama,open_webui"
-
 # Deploy only Excalidraw
 ansible-playbook deploy.yml --tags "excalidraw"
+
+# Deploy only Open WebUI
+ansible-playbook deploy.yml --tags "open_webui"
 ```
 
 ### Available Deployment Tags
 
-| Tag            | Application               | Status                         |
-| -------------- | ------------------------- | ------------------------------ |
-| `excalidraw` | Excalidraw whiteboard     | ✅ Active in playbook          |
-| `ollama`     | Ollama LLM engine         | ✅ Active in playbook          |
-| `open_webui` | Open WebUI interface      | ✅ Active in playbook          |
-| `homer`      | Homer dashboard           | ⚠️ Commented out in playbook |
-| `postgres`   | PostgreSQL database       | ⚠️ Commented out in playbook |
-| `planka`     | Planka project management | ⚠️ Commented out in playbook |
+| Tag          | Application           | Status               |
+| ------------ | --------------------- | -------------------- |
+| `excalidraw` | Excalidraw whiteboard | ✅ Active in playbook |
+| `open_webui` | Open WebUI interface  | ✅ Active in playbook |
 
 ### Verify Deployment
 
@@ -281,10 +258,8 @@ docker ps
 
 You should see containers named:
 
-- `ollama`
 - `open-webui`
 - `excalidraw`
-- (plus any other enabled applications)
 
 ## 🗑️ Uninstallation
 
@@ -296,10 +271,10 @@ Running `uninstall.yml` **without tags** will remove **ALL** applications! Alway
 
 ```bash
 # Uninstall a single application
-ansible-playbook uninstall.yml --tags "ollama"
+ansible-playbook uninstall.yml --tags "excalidraw"
 
 # Uninstall multiple applications
-ansible-playbook uninstall.yml --tags "excalidraw,ollama,open_webui"
+ansible-playbook uninstall.yml --tags "excalidraw,open_webui"
 ```
 
 ### Uninstall All Applications
@@ -314,7 +289,6 @@ ansible-playbook uninstall.yml
 The uninstall playbook performs the following actions:
 
 - ✅ Stops and removes Docker containers
-- ✅ Removes Ollama CLI tools (if uninstalling Ollama)
 - ❌ **Preserves** data volumes (must be manually removed if desired)
 - ❌ **Preserves** configuration files
 
@@ -322,14 +296,10 @@ The uninstall playbook performs the following actions:
 
 All applications support uninstallation via tags:
 
-| Tag            | Application               |
-| -------------- | ------------------------- |
-| `postgres`   | PostgreSQL database       |
-| `homer`      | Homer dashboard           |
-| `excalidraw` | Excalidraw whiteboard     |
-| `planka`     | Planka project management |
-| `ollama`     | Ollama LLM engine         |
-| `open_webui` | Open WebUI interface      |
+| Tag          | Application           |
+| ------------ | --------------------- |
+| `excalidraw` | Excalidraw whiteboard |
+| `open_webui` | Open WebUI interface  |
 
 ### Manual Cleanup (Optional)
 
@@ -350,14 +320,10 @@ docker network rm local_network
 
 Once deployed, access your applications through these URLs:
 
-| Application              | URL                    | Description                     |
-| ------------------------ | ---------------------- | ------------------------------- |
-| 🌐**Open WebUI**   | http://localhost:8080  | Web interface for Ollama models |
-| 🎨**Excalidraw**   | http://localhost:8082  | Collaborative whiteboard        |
-| 🏠**Homer**        | http://localhost:8081  | Dashboard (if enabled)          |
-| 📊**Planka**       | http://localhost:8083  | Project management (if enabled) |
-| 🤖**Ollama API**   | http://localhost:11434 | Direct API access for Ollama    |
-| 🗄️**PostgreSQL** | localhost:5432         | Database (internal only)        |
+| Application          | URL                   | Description              |
+| -------------------- | --------------------- | ------------------------ |
+| 🌐**Open WebUI** | http://localhost:8080 | Web interface for AI/LLM |
+| 🎨**Excalidraw** | http://localhost:8082 | Collaborative whiteboard |
 
 ### First-Time Setup
 
@@ -365,16 +331,8 @@ Once deployed, access your applications through these URLs:
 
 1. Navigate to http://localhost:8080
 2. Create your admin account on first visit
-3. Download models from the Settings > Models section
-4. Start chatting!
-
-**For Ollama CLI:**
-
-```bash
-# The Ollama CLI is automatically installed and available
-ollama-local pull llama3  # Download a model
-ollama-local run llama3   # Run the model
-```
+3. Configure your AI/LLM backend in Settings
+4. Start using the interface!
 
 ## 📁 Project Structure
 
@@ -390,18 +348,13 @@ local-projects/
 ├── ⚙️ Configuration & Variables
 │   └── group_vars/all/
 │       ├── main.yml                # Main config (deployment flags, paths)
-│       ├── postgres.yml            # PostgreSQL configuration
 │       └── vault/                  # 🔒 Encrypted sensitive data (Ansible Vault)
 │
 ├── 🎭 Application Roles
 │   └── roles/
 │       ├── common/                 # Shared tasks and configurations
 │       ├── excalidraw/             # Excalidraw whiteboard
-│       ├── homer/                  # Homer dashboard
-│       ├── ollama/                 # Ollama LLM engine
-│       ├── open_webui/             # Open WebUI interface
-│       ├── planka/                 # Planka project management
-│       └── postgres/               # PostgreSQL database
+│       └── open_webui/             # Open WebUI interface
 │       │
 │       └── Each role contains:
 │           ├── tasks/
@@ -413,12 +366,9 @@ local-projects/
 ├── 📚 Documentation
 │   └── docs/
 │       ├── OPEN_WEBUI_CONFIGURATION.md   # Open WebUI setup guide
-│       ├── QUICK_START_OLLAMA.md         # Quick start for AI features
 │       └── examples/                     # Configuration examples
 │
 ├── 🛠️ Utilities & Scripts
-│   ├── scripts/
-│   │   └── test-ollama-connection.sh    # Test Ollama API
 │   ├── requirements.txt                  # Python dependencies
 │   └── requirements.yml                  # Ansible collections
 │
@@ -436,6 +386,7 @@ local-projects/
 │
 └── 📄 Project Files
     ├── README.md                  # This file
+    ├── CLAUDE.md                  # Claude Code context
     └── LICENSE                    # MIT License
 ```
 
@@ -452,40 +403,8 @@ local-projects/
 
 ## 📚 Documentation
 
-- **[Quick Start: Ollama + Open WebUI](docs/QUICK_START_OLLAMA.md)** - Get started quickly with Ollama and Open WebUI
 - **[Open WebUI Configuration](docs/OPEN_WEBUI_CONFIGURATION.md)** - Detailed configuration options for Open WebUI
 - **[Configuration Examples](docs/examples/)** - Example configuration files
-
-## 🤖 Ollama Configuration
-
-The Ollama integration includes:
-
-- Automatic GPU support detection and configuration
-- Automatic CLI extraction from container for local usage
-- Profile script for easy CLI access via `ollama-local` command
-- Health checks to ensure the API is ready
-
-For GPU acceleration, ensure the NVIDIA Container Toolkit is installed and the `ollama_use_gpu` variable is set to `true` in your configuration.
-
-### Open WebUI Connection to Ollama
-
-Open WebUI needs to communicate with Ollama. The connection URL can be configured in two ways:
-
-**Option 1: Via container name (recommended)**
-
-```yaml
-# In group_vars/all/main.yml
-open_webui_ollama_base_url: "http://ollama:11434"
-```
-
-**Option 2: Via host (current default)**
-
-```yaml
-# In roles/open_webui/vars/main.yml
-open_webui_ollama_base_url: "http://127.0.0.1:11434/"
-```
-
-For detailed configuration options and troubleshooting, see [Open WebUI Configuration Guide](docs/OPEN_WEBUI_CONFIGURATION.md).
 
 ## ☁️ GitHub Infrastructure as Code
 
@@ -543,9 +462,6 @@ All of these run automatically on commit:
 ```bash
 # Run pre-commit checks manually
 pre-commit run --all-files
-
-# Test Ollama connection
-bash scripts/test-ollama-connection.sh
 
 # Validate Ansible syntax
 ansible-playbook deploy.yml --syntax-check
@@ -624,30 +540,6 @@ grep vault_password_file ansible.cfg
 </details>
 
 <details>
-<summary><b>Ollama GPU Not Working</b></summary>
-
-**Problem:** Ollama not using GPU acceleration
-
-**Solution:**
-
-```bash
-# 1. Install NVIDIA Container Toolkit
-# Follow: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
-
-# 2. Verify installation
-docker info | grep -i nvidia
-
-# 3. Enable GPU in configuration
-# Edit roles/ollama/vars/main.yml
-ollama_use_gpu: true
-
-# 4. Redeploy
-ansible-playbook deploy.yml --tags "ollama"
-```
-
-</details>
-
-<details>
 <summary><b>Port Already in Use</b></summary>
 
 **Problem:** `Error: bind: address already in use`
@@ -665,32 +557,6 @@ sudo netstat -tulpn | grep :8080
 # Example: open_webui_port: 8081
 
 # Redeploy
-ansible-playbook deploy.yml --tags "open_webui"
-```
-
-</details>
-
-<details>
-<summary><b>Open WebUI Can't Connect to Ollama</b></summary>
-
-**Problem:** Open WebUI shows "Cannot connect to Ollama"
-
-**Solution:**
-
-```bash
-# 1. Verify Ollama is running
-docker ps | grep ollama
-
-# 2. Test Ollama API
-curl http://localhost:11434/api/version
-
-# 3. Check Open WebUI configuration
-# Edit roles/open_webui/vars/main.yml
-open_webui_ollama_base_url: "http://ollama:11434"  # Use container name
-# or
-open_webui_ollama_base_url: "http://127.0.0.1:11434"  # Use host
-
-# 4. Redeploy Open WebUI
 ansible-playbook deploy.yml --tags "open_webui"
 ```
 
